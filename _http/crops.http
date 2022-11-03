@@ -1,0 +1,57 @@
+
+@auth_token = {{get_auth_token.response.body.data}}
+@created_crop_id = {{create_crops.response.body.data.id}}
+@crop_id = {{get_crops.response.body.data[0].id}}
+
+
+###
+# @name get_auth_token
+GET {{protocol}}://{{auth-domain}}/auth
+?key={{key}}
+&secret={{secret}}
+
+
+###
+# @name create_crops
+POST {{protocol}}://{{domain}}/crops
+Authorization: {{auth_token}}
+content-type: application/json
+
+{
+    "label":"Test",
+    "scientificName":"Test",
+    "usdaSymbol":"TST",
+    "familyId": 1,
+    "groupId": 1
+}
+
+
+###
+# @name get_crops
+GET {{protocol}}://{{domain}}/crops
+Authorization: {{auth_token}}
+
+
+###
+# @name retrieve_crop
+GET {{protocol}}://{{domain}}/crops/{{created_crop_id}}
+Authorization: {{auth_token}}
+
+
+###
+# @name update_crop
+PUT {{protocol}}://{{domain}}/crops/{{crop_id}}
+Authorization: {{auth_token}}
+content-type: application/json
+
+{
+    "label":"Test Crop",
+    "scientificName":"Test",
+    "usdaSymbol":"TST1"
+}
+
+
+###
+# @name delete_crop
+DELETE {{protocol}}://{{domain}}/crops/{{created_crop_id}}
+Authorization: {{auth_token}}

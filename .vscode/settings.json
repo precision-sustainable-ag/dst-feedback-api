@@ -1,0 +1,20 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared":{
+        },
+        "local": {
+            "protocol":"http",
+            "domain": "localhost:3002",
+            "auth-domain": "localhost:3001",
+            "key": "2SXTZPQV2HDY98FA",
+            "secret": "72FzYFGNCbn8TYgYaXK8xDm7JKaGFYjp",
+        },
+        "prod": {
+            "protocol":"https",
+            "domain": "covercrop-data.org",
+            "auth-domain": "localhost:3001",
+            "key": "2SXTZPQV2HDY98FA",
+            "secret": "72FzYFGNCbn8TYgYaXK8xDm7JKaGFYjp",
+        },
+    }
+}
