@@ -1,7 +1,8 @@
+const { PostFeedbackToGithub } = require('../app/jobs/PostFeedbackToGithub');
 const {env} = require('./kernel');
 
 module.exports =  {
-    // broadcast: {
-    //     handler: BroadcastDataJob
-    // }
+    push_to_github: {
+        handler: PostFeedbackToGithub
+    }
 }

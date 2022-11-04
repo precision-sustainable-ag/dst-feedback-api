@@ -10,8 +10,8 @@ const watching = require('./config/databaseListeners');
 
 const Providers = [
     LoggingProvider, //logging provider should be first so any other provider failures can be logged.
-    DatabaseProvider, //!db provider must be registered before models provider.
-    ModelsProvider,
+    // DatabaseProvider, //!db provider must be registered before models provider.
+    // ModelsProvider,
     ValidatorProvider
 ];
 
@@ -21,7 +21,6 @@ async function RegisterProviders(app){
     }
 
     await QueueProvider.register(queues); 
-    await DatabaseProvider.registerListeners(watching);
 }
 
 

@@ -38,6 +38,9 @@ class EditRequest extends RetrieveRequest {
     getModelRules(req){
         const rules = {};
         const model = this.model();
+
+        if(!model) return {};
+
         const attributes = model.attributes();
 
         for(let [attribute, properties] of Object.entries(attributes)) {

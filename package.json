@@ -14,6 +14,10 @@
     "db-seed": "node src/migrations/seed.js",
     "db-seed-fresh": "npm run db-fresh && npm run db-seed",
     "make": "npx --prefix ./_generator hygen ",
+    "make:controller": "npx --prefix ./_generator hygen controller new --name=$npm_config_name",
+    "make:model": "npx --prefix ./_generator hygen model new --name=$npm_config_name",
+    "make:router": "npx --prefix ./_generator hygen router new --name=$npm_config_name --scope=$npm_config_scope",
+    "make:request": "npx --prefix ./_generator hygen requests new:$npm_config_type --name=$npm_config_name",
     "make:resource": "npx --prefix ./_generator hygen model new --name=$npm_config_name && npx --prefix ./_generator hygen controller new --name=$npm_config_name && npx --prefix ./_generator hygen router new --name=$npm_config_name --scope=$npm_config_scope && npx --prefix ./_generator hygen requests new:create --name=$npm_config_name && npx --prefix ./_generator hygen requests new:update --name=$npm_config_name  && npx --prefix ./_generator hygen requests new:retrieve --name=$npm_config_name && npx --prefix ./_generator hygen requests new:paginated --name=$npm_config_name && npx --prefix ./_generator hygen requests new:delete --name=$npm_config_name"
   },
   "jest": {
@@ -24,14 +28,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trevorjpuckett/express.js.git"
+    "url": "git+https://github.com/precision-sustainable-ag/dst-feedback-api.git"
   },
   "author": "trevorjpuckett",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/trevorjpuckett/express.js/issues"
+    "url": "https://github.com/precision-sustainable-ag/dst-feedback-api/issues"
   },
-  "homepage": "https://github.com/trevorjpuckett/express.js#readme",
+  "homepage": "https://github.com/precision-sustainable-ag",
   "dependencies": {
     "@azure/identity": "^3.0.0",
     "@azure/storage-blob": "^12.11.0",
@@ -47,6 +51,7 @@
     "jsonwebtoken": "^8.5.1",
     "luxon": "^3.0.4",
     "module-alias": "^2.2.2",
+    "octokit": "^2.0.10",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "pluralize": "^8.0.0",
@@ -62,8 +67,9 @@
     "supertest": "^6.3.0"
   },
   "_moduleAliases": {
-    "@app": "app",
-    "@routes": "routes",
-    "@config": "config"
+    "@app": "src/app",
+    "@routes": "src/routes",
+    "@config": "src/config",
+    "@framework": "src/framework"
   }
 }

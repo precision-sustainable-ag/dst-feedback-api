@@ -1,0 +1,16 @@
+
+
+
+
+POST {{protocol}}://{{domain}}/feedback
+Content-Type: application/json
+
+{
+    "repository": "test-issues",
+    "name": "jorgie",
+    "email": "sample@sample.op",
+    "comment": ";qhwioehqhiuqwhiudajklsdhajsklhdasljhsjlfhowihepiofueiwhq ewhfeiquwfh iueew fipuqhewufh jklqwfbjdbaeih fiu iuebfiueqwbfiu bfew",
+    "labels": [
+        "one","two","three"
+    ]
+}

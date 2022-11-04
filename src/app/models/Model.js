@@ -28,16 +28,6 @@ class Model extends SequelizeModel {
             // Model attributes are defined here
         }
     }
-
-    /**
-     * to learn more about available relations please reference sequelize docs
-     * https://sequelize.org/docs/v6/core-concepts/assocs/
-     */
-    static relations(){
-        return {
-            
-        }
-    }
     
     /**
      * to learn more about available options please reference sequelize docs
