@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: dstfeedbackapi 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dstfeedbackapi
+  template:
+    metadata:
+      labels:
+        app: dstfeedbackapi 
+    spec:
+      containers:
+        - name: dstfeedbackapi 
+          image: containerregistry4pd7i.azurecr.io/dstfeedbackapi
+          ports:
+          - containerPort: 80
