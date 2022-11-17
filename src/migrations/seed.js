@@ -1,13 +1,13 @@
-const Seeder = require("./seeds/Seeder");
+// const Seeder = require("./seeds/Seeder");
 
-async function run(){
+// async function run(){
     
-    await Seeder.sow();
+//     await Seeder.sow();
 
-}
+// }
 
-run();
+// run();
 
-module.exports = {
-    run
-}
+// module.exports = {
+//     run
+// }
