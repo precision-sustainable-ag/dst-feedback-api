@@ -33,6 +33,27 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - script: |	
+        echo APP_NAME="$(APP_NAME)" >> /home/vsts/work/1/s/.env
+        echo APP_PORT="$(APP_PORT)" >> /home/vsts/work/1/s/.env
+        echo APP_ENV="$(APP_ENV)" >> /home/vsts/work/1/s/.env
+        
+        echo LOG_CHANNEL="$(LOG_CHANNEL)" >> /home/vsts/work/1/s/.env
+        echo CONSOLE_LOG_LEVEL="$(CONSOLE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
+        echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
+        echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
+        echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> /home/vsts/work/1/s/.env
+
+        echo REDIS_PORT="$(REDIS_PORT)" >> /home/vsts/work/1/s/.env
+        echo REDIS_HOST="$(REDIS_HOST)" >> /home/vsts/work/1/s/.env
+        echo REDIS_PASSWORD="$(REDIS_PASSWORD)" >> /home/vsts/work/1/s/.env
+
+        echo GITHUB_ORGANIZATION="$(GITHUB_ORGANIZATION)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_APP_ID="$(GITHUB_APP_ID)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> /home/vsts/work/1/s/.env
+      displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
