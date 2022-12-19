@@ -4,7 +4,7 @@ const { JwtService } = require('../../services/jwt/JwtService');
 
 function ParseScopes(scopes){
     if(!scopes) return [];
-    if(scopes instanceof String) scopes = scopes.trim().split(',');
+    if(typeof scopes == 'string') scopes = scopes.trim().split(',');
     return scopes;
 
 }
