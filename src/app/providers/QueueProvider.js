@@ -1,7 +1,7 @@
 const Queue = require("bull");
 const redis_conf = require('../../config/redis');
-const { Provider } = require("./Provider");
 const { Log } = require("./LoggingProvider");
+const { Provider } = require('../../framework/providers/Provider');
 
 // const QUEUES = {}
 
@@ -9,7 +9,7 @@ class QueueProvider extends Provider {
 
     static queues = {};
 
-    static async register(queues){
+    static async register(app,queues){
 
         for(let [channel, config] of Object.entries(queues)){
             // create the bull queue
@@ -34,13 +34,7 @@ class QueueProvider extends Provider {
                         }, null, "\t")));
 
                     }).catch(err => {
-                        Log.Critical({
-                            heading:`Failed Job ${payload.queue.name}`, 
-                            message: {
-                                error: err.message,
-                                stack: err.stack
-                            }
-                        });
+                        Log.Critical({heading:`Failed Job ${payload.queue.name}`, message:err});
                         done(err);
                     });
                 });
@@ -57,8 +51,7 @@ class QueueProvider extends Provider {
             redis: { 
                 port: redis_conf.port, 
                 host: redis_conf.host, 
-                password: redis_conf.password,
-                maxRetriesPerRequest: 3
+                password: redis_conf.password 
             } 
         });
     }
@@ -72,22 +65,14 @@ class QueueProvider extends Provider {
 
         const queue = this.queues[channel].queue;
         
-        queue.add(payload).catch(error => 
-            Log.Critical({
-                heading:`Failed to create ${channel} Job`,
-                message: {
-                    payload,
-                    error: error.message,
-                    stack: error.stack
-                }
-        }));
+        queue.add(payload);
 
         return true;
     }
 
     static factory() {
 
-        // return Job;
+        return Job;
 
     }
 

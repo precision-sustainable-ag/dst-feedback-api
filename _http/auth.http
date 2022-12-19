@@ -1,9 +1,0 @@
-
-
-###
-# @name get_auth_token
-GET {{protocol}}://{{auth-domain}}/auth
-?key={{key}}
-&secret={{secret}}
-
-

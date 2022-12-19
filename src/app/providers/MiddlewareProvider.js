@@ -1,7 +1,7 @@
 const CatchAll = require('../http/middleware/CatchAll');
 const ErrorRenderer = require('../http/middleware/ErrorRenderer');
-const OpenToken = require('../http/middleware/OpenToken');
 const Cors = require('../http/middleware/Cors');
+const Auth = require('../http/middleware/Auth');
 
 
 class MiddlewareProvider {
@@ -12,12 +12,15 @@ class MiddlewareProvider {
          * https://www.npmjs.com/package/cors
          */
         app.use(Cors);
+        // app.use(Auth());
         // registeration order matters...
-        app.use(OpenToken);
    
     }
     
     static RegisterEndOfLifecycleMiddleware(app){
+        // registeration order matters...
+
+
         // this should be second to last
         app.use(CatchAll);
         // this should always be last.

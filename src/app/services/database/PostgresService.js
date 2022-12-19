@@ -1,35 +1,33 @@
 const { Client } = require("pg");
-const db_conf = require("../../../config/database");
+
 
 
 class PostgresService {
 
-    getSSL(){
-        if(db_conf.ssl === 'true'){
-            return {
-                ssl:{
-                    rejectUnauthorized: false,
-                }
-            }
-        }
-        return {};
-    }
+
 
     constructor(settings){
 
         this.settings = settings;
-        this.ssl = this.getSSL();
         this.queries = [];
         this.watching = {};
         this.client = null;
         this.listener = null;
+        this.ssl = this.getSSL();
+    }
 
+    getSSL(){
+        if(this.settings?.dialectOptions){
+            return this.settings.dialectOptions;
+        }
+        return {};
     }
 
     buildClient(database, settings){
         if(!settings) settings = this.settings;
         if(!database) database = settings.database;
         const ssl = this.ssl;
+
         return new Client({
             user: settings.username,
             password: settings.password,
@@ -119,60 +117,6 @@ class PostgresService {
         });
     }
 
-    createNotifyDataEditFunction(){
-        const sql = `
-            CREATE OR REPLACE FUNCTION notify_data_edit() RETURNS TRIGGER AS $notify_data_edit$
-                DECLARE
-                    model TEXT;
-                BEGIN        
-                    --
-                    -- set channel to first argument
-                    -- package operation / old / new data into json object
-                    -- and use that json object as the payload in a notification event
-                    --
-                    model = TG_ARGV[0]::TEXT;
-                    
-                    PERFORM (
-                        with payload(model,operation,old,"new") as (
-                            SELECT 
-                                model as model,
-                                TG_OP as operation,
-                                row_to_json(OLD)::TEXT as old,
-                                row_to_json(NEW)::TEXT as "new"
-                        )
-                        SELECT pg_notify('data_edit',row_to_json(payload)::TEXT) FROM payload
-                    );
-                    
-                    RETURN NULL; -- result is ignored since this is an AFTER trigger
-                END;
-            $notify_data_edit$ LANGUAGE plpgsql;
-        `;
-
-        return this.query({sql});
-    }
-
-    createDataEditTrigger(table, channel){
-        if(!channel) channel = table;
-        const sql = `
-            CREATE TRIGGER notify_data_edit
-            AFTER INSERT OR UPDATE OR DELETE ON ${table}
-                FOR EACH ROW EXECUTE FUNCTION notify_data_edit('${channel}');
-        `;
-
-        return this.query({sql});
-    }
-
-    createTriggers(){
-        return this.createNotifyDataEditFunction()
-            .createDataEditTrigger('crops','crop')
-            .createDataEditTrigger('families','family')
-            .createDataEditTrigger('regions','region')
-            .createDataEditTrigger('zones','zone')
-            .createDataEditTrigger('images','image')
-            .createDataEditTrigger('synonyms','synonym')
-            .createDataEditTrigger('crops_zones','cropsZone')
-            .createDataEditTrigger('groups','group');
-    }
     
     findNonExistingDatabase(database){
 
@@ -203,12 +147,33 @@ class PostgresService {
         });
     }
 
+    dropDatabase(database){
+
+        const sql = `
+            DROP DATABASE ${database}
+        `;
+
+        return this.query({
+            sql,
+            params: [],
+            resolver: (result) => true
+        });
+    }
+
 
     createDatabaseIfNotExists(database){
 
         return this
             .findNonExistingDatabase(database)
             .createDatabase(database);
+
+    }
+    
+    dropDatabaseIfExists(database){
+
+        return this
+            .findExistingDatabase(database)
+            .dropDatabase(database);
 
     }
 

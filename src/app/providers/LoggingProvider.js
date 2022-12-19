@@ -2,7 +2,7 @@ const { DEBUG, INFO, WARNING, CRITICAL, Logger } = require('../support/logging/L
 const { SingleLogger } = require('../support/logging/SingleLogger');
 const { DailyLogger } = require('../support/logging/DailyLogger');
 const { SlackLogger } = require('../support/logging/SlackLogger');
-const {Provider} = require('./Provider');
+const {Provider} = require('../../framework/providers/Provider');
 const log_conf = require('../../config/logging');
 
 

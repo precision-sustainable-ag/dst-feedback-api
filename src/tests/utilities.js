@@ -73,27 +73,6 @@ class Expect {
         expect(record.updatedAt).toBeTruthy();
     }
 
-    static CropRecord(record){
-        Expect.DatabaseRecord(record);
-        Expect.CropObject(record);
-    }
-    
-    static CropObject(record){
-        expect(record.label).toBeTruthy();
-        expect(record.scientificName).toBeTruthy();
-        expect(record.usdaSymbol).toBeTruthy();
-    }
-
-    static FamilyRecord(record){
-        Expect.DatabaseRecord(record);
-        Expect.FamilyObject(record);
-    }
-
-    static FamilyObject(record){
-        expect(record.commonName).toBeTruthy();
-        expect(record.scientificName).toBeTruthy();
-    }
-
 }
 
 

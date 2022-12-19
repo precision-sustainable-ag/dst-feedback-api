@@ -1,6 +1,6 @@
 
 const { Log } = require('./LoggingProvider');
-const {Provider} = require('./Provider');
+const {Provider} = require('../../framework/providers/Provider');
 const express = require('express');
 const { bootstrap } = require('../../bootstrap');
 const { DatabaseProvider } = require('./DatabaseProvider');

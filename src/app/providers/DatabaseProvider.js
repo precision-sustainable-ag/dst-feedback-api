@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { Log } = require('./LoggingProvider');
-const {Provider} = require('./Provider');
+const {Provider} = require('../../framework/providers/Provider');
 const db_conf = require('../../config/database');
 const { PostgresService } = require('../services/database/PostgresService');
 
@@ -35,8 +35,9 @@ class DatabaseProvider extends Provider {
     }
 
     static async registerListeners(watching){
-
-        if(this.config.connection != 'postgres') return false;
+        const config = this.getConfig();
+        
+        if(config.connection != 'postgres') return false;
 
         const service = DatabaseProvider.Service();
 
@@ -59,7 +60,7 @@ class DatabaseProvider extends Provider {
             return {
                 dialectOptions: {
                     ssl: {
-                      require: true, // This will help you. But you will see nwe error
+                      require: db_conf.ssl, // This will help you. But you will see nwe error
                       rejectUnauthorized: false // This line will fix new error
                     }
                 }
@@ -97,7 +98,7 @@ class DatabaseProvider extends Provider {
     }
 
     static async sync(modelsProvider, options={}){
-        const MIGRATIONS = await modelsProvider.factory();
+        const MIGRATIONS = await modelsProvider.factory(null,this);
 
         for (let migration of Object.values(MIGRATIONS)) {
         

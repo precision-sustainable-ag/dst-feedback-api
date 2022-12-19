@@ -55,7 +55,7 @@ class Logger {
         if(!heading) heading = level;
         
         if(!message){ message = '';}
-        else if(message instanceof Error) message = {error: message.message, stack: message.stack}
+        else if(message instanceof Error) message = message.stack
         else if(typeof message == 'object')message = JSON.stringify(message, null, "\t");
 
         const time = DateTime.now();

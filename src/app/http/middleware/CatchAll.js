@@ -1,6 +1,6 @@
 
-const { ForbiddenAccess } = require('../../exceptions/ForbiddenAccess');
+const { ForbiddenAccessError } = require('../../../framework/errors/ForbiddenAccessError');
 
 module.exports =  (req,res,next)=>{
-    throw new ForbiddenAccess();
+    throw new ForbiddenAccessError();
 }
