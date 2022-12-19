@@ -1,7 +1,7 @@
 {
-  "name": "express-js-api",
+  "name": "dst-feedback-api",
   "version": "1.0.0",
-  "description": "ExpressJS API",
+  "description": "DST Feedback API",
   "main": "src/app.js",
   "scripts": {
     "test": "cross-env APP_ENV=test jest ./src/tests --forceExit",
