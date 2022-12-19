@@ -4,7 +4,7 @@ class UnauthorizedError extends RenderableError {
 
     constructor(errors){
         super();
-        this.errors = ['Unauthorized', ...errors];
+        this.errors = errors;
     }
 
     status(){
@@ -24,16 +24,28 @@ class UnauthorizedError extends RenderableError {
             type: 'object',
             properties: {
                 type:{type:'string'},
-                messages: {type:'array',items:{type:'string'}}
+                errors: {
+                    type:'object',
+                    properties:{
+                        key:{type:'string'},
+                        messages:{type:'array', items:{type:'string'}}
+                    }
+                }
             }
         }
     }
 
+    wrapper(){
+        return this.schema();
+    }
+
     build(data){
-        data = this.errors;
         return {
             type:'object',
-            ...data,
+            errors:{
+                key: 'Unauthorized',
+                messages: this.errors ?? [],
+            }
         };
     }
 
