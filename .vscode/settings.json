@@ -4,7 +4,7 @@
         },
         "local": {
             "protocol":"http",
-            "domain": "localhost:3000",
+            "domain": "localhost:3001",
             "auth-domain": "localhost:3001",
             "key": "2SXTZPQV2HDY98FA",
             "secret": "72FzYFGNCbn8TYgYaXK8xDm7JKaGFYjp",

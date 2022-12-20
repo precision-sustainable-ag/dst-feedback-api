@@ -1,4 +1,3 @@
-const { Log } = require("../../app/providers/LoggingProvider");
 const { QueueProvider } = require("../../app/providers/QueueProvider");
 
 

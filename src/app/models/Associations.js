@@ -1,17 +1,22 @@
 
+
 module.exports = [
 
-    // { // crop belongs to family
+    // examples have tags
+    // {
+    //     label: 'examples have many tags',
     //     parent: {
-    //         model: Family,
+    //         model: Example,
     //         relation: 'hasMany',
-    //         options:{},
+    //         options: {}
     //     },
     //     child: {
-    //         model: Crop,
+    //         model: Tag,
     //         relation: 'belongsTo',
-    //         options:{},
+    //         options: {}
     //     },
     // },
+    // groups have many crops
+    
 
 ]
