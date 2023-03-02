@@ -68,7 +68,6 @@ class ModelsProvider extends Provider {
     }
 
     static async registerModel(model, dbProvider){
-        console.log('> Model',model);
         // is this model already registered?
         if(model.getTable() in MODELS) return;
 
