@@ -9,6 +9,8 @@ module.exports = {
     },
     servers: [
         {url:`http://localhost:${env.APP_PORT ?? 3000}`, description: "local"},
+        {url:`https://developfeedback.covercrop-data.org`, description: "development"},
+        {url:`https://feedback.covercrop-data.org`, description: "production"},
     ],
     externalDocs:{
         description: "",
