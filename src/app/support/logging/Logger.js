@@ -67,7 +67,7 @@ class Logger {
             message,
             flat: `[${level.label}\t| ${time}] ${heading}\n${message}\n`
         }
-
+        
         if(level.order >= LOG_LEVEL.order){
             this.write(stmnt, level);
         }
