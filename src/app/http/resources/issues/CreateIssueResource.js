@@ -2,9 +2,14 @@ const { BadRequestError } = require('../../../../framework/errors/BadRequestErro
 const { InternalServerError } = require('../../../../framework/errors/InternalServerError');
 const { UnprocessibleEntityError } = require('../../../../framework/errors/UnprocessibleEntityError');
 const { CreateResource } = require('../../../../framework/resources/CreateResource');
+const { Issue } = require('../../../models/Issue');
 
+function transform(data){
+    data.payload.labels = JSON.parse(data.payload.labels);
+    return data;
+}
 
-class CreateFeedbackResource extends CreateResource {
+class CreateIssueResource extends CreateResource {
 
     /**
     * returns HTTP Status code for the error.
@@ -19,7 +24,7 @@ class CreateFeedbackResource extends CreateResource {
     }
     
     description(){
-        return "Returns a Feedback Object";
+        return "Returns a Issue Object";
     }
 
     /**
@@ -28,27 +33,27 @@ class CreateFeedbackResource extends CreateResource {
     * https://spec.openapis.org/oas/v3.0.0#schema-object
     */
     schema(){
+        const issueSchema = Issue.schema({});
+        issueSchema.properties.labels = {
+            type: 'array',
+            items: {type:'string'}
+        };
         return {
             type:'object',
             properties:{
-                type: {type:'string'},
-                queued: {type:'boolean'},
+                status: {type:'string',default:'success'},
+                payload: issueSchema
+
             }
         };
-    }
-
-    wrapper(){
-        return this.schema();
     }
 
     /**
     * build the data object
     */
     build(res,req){
-        return {
-            type:'boolean',
-            ...res.data
-        };
+        res.data = transform(res.data);
+        return super.build(res,req);
     }
 
     errors(){
@@ -63,5 +68,5 @@ class CreateFeedbackResource extends CreateResource {
 }
 
 module.exports = {
-    CreateFeedbackResource
+    CreateIssueResource
 }

@@ -1,8 +1,9 @@
 const bodyParser = require('body-parser');
 const {Request} = require('../../../../framework/requests/Request');
+const { Issue } = require('../../../models/Issue');
 
 
-class CreateFeedbackRequest extends Request {
+class CreateIssueRequest extends Request {
    
     /**
      * unless other middleware is introduced between the request handler and the controller handler,
@@ -54,27 +55,14 @@ class CreateFeedbackRequest extends Request {
      * https://spec.openapis.org/oas/v3.0.0#schema-object
      */
     body(){
-        return {
-            type: 'object',
-            properties:{
-                repository: {
-                    type:'string'
-                },
-                title: {type:'string'},
-                name: {type:'string'},
-                email: {type:'string',format:'email'},
-                comment: {type:'string'},
-                labels: {
-                    type:'array',
-                    items:{
-                        type:'string'
-                    }
-                }
-            },
-            required: ['repository','title','name','email','comment']
+        const schema = Issue.schema({exclude:[{prop:'autoIncrement',value:true}]});
+        schema.properties.labels = {
+            type: 'array',
+            items: {type:'string'}
         };
+        return schema;
     }
 
 }
 
-module.exports = { CreateFeedbackRequest }
+module.exports = { CreateIssueRequest }

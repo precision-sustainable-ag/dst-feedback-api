@@ -32,7 +32,7 @@ class PostFeedbackToGithub extends Job {
         const body = this.buildBodyString({
             name: data.name,
             email: data.email,
-            comment: data.comment
+            comment: data.comments
         });
 
         Log.Debug({heading:'Posting Issue to GitHub',message:data});
@@ -42,7 +42,6 @@ class PostFeedbackToGithub extends Job {
             title: data.title,
             body,
             labels:data.labels
-
         });
 
         Log.Debug({heading:`Post Feedback To GitHub Job Status`, message: {sent:  (response?.status === 201)}});

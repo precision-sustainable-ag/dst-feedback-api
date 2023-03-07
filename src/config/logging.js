@@ -5,7 +5,7 @@ module.exports =  {
     exclude: {
         env: ['test']
     },
-    stack: ['console','daily','slack'],
+    stack: ['console','slack'],
     single: {
         level: env.FILE_LOG_LEVEL ?? 'critical',
     },
