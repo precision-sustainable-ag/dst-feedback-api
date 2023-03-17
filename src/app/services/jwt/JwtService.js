@@ -55,20 +55,32 @@ class JwtService {
     }
 
     static async encode(data){
-        const keychain = await this.getKey();
-        // get private key from keychain or assume key chain represents the key itself.
-        const key = keychain.private ?? keychain;
-        const algorithm = this.getAlgorithim();
-        const expiresIn = jwt_conf.lifetime;
-        return jwt.sign(data, key, {algorithm,expiresIn})
+        try{
+            const keychain = await this.getKey();
+            // get private key from keychain or assume key chain represents the key itself.
+            const key = keychain.private ?? keychain;
+            const algorithm = this.getAlgorithim();
+            const expiresIn = jwt_conf.lifetime;
+            return jwt.sign(data, key, {algorithm,expiresIn})
+
+        }
+        catch(error){
+            Log.Debug({heading:'Failed to encode data', message:{error:error.message, stack:error.stack, data:data}});
+            return null;
+        }
     }
 
     static async decode(token){
-        const keychain = await this.getKey();
-        // get private key from keychain or assume key chain represents the key itself.
-        const key = keychain.public ?? keychain;
-        const algorithm = this.getAlgorithim();
-        return jwt.verify(token, key,  { algorithms: [algorithm] });
+        try {
+            const keychain = await this.getKey();
+            // get private key from keychain or assume key chain represents the key itself.
+            const key = keychain.public ?? keychain;
+            const algorithm = this.getAlgorithim();
+            return jwt.verify(token, key,  { algorithms: [algorithm] });
+        }catch(error){
+            Log.Debug({heading:'Failed to decode token', message:{error:error.message, stack:error.stack, token:token}});
+            return null;
+        }
     }
 
 

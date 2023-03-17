@@ -43,6 +43,15 @@ stages:
         echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> /home/vsts/work/1/s/.env
+        
+        echo DB_CONNECTION="$(DB_CONNECTION)" >> /home/vsts/work/1/s/.env
+        echo DB_DATABASE="$(DB_DATABASE)" >> /home/vsts/work/1/s/.env
+        echo DB_HOST="$(DB_HOST)" >> /home/vsts/work/1/s/.env
+        echo DB_PORT="$(DB_PORT)" >> /home/vsts/work/1/s/.env
+        echo DB_USERNAME="$(DB_USERNAME)" >> /home/vsts/work/1/s/.env
+        echo DB_PASSWORD="$(DB_PASSWORD)" >> /home/vsts/work/1/s/.env
+        echo DB_SSL="$(DB_SSL)" >> /home/vsts/work/1/s/.env
+        echo DB_WATCH="$(DB_WATCH)" >> /home/vsts/work/1/s/.env
 
         echo REDIS_PORT="$(REDIS_PORT)" >> /home/vsts/work/1/s/.env
         echo REDIS_HOST="$(REDIS_HOST)" >> /home/vsts/work/1/s/.env
@@ -51,7 +60,7 @@ stages:
         echo GITHUB_ORGANIZATION="$(GITHUB_ORGANIZATION)" >> /home/vsts/work/1/s/.env
         echo GITHUB_APP_ID="$(GITHUB_APP_ID)" >> /home/vsts/work/1/s/.env
         echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> /home/vsts/work/1/s/.env
-        echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_CLIENT_SECRET="$(GITHUB_CLIENT_SECRET)" >> /home/vsts/work/1/s/.env
         echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> /home/vsts/work/1/s/.env
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -62,7 +71,6 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-
     - upload: manifests
       artifact: manifests
 
@@ -99,7 +107,6 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
@@ -140,7 +147,6 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
           - task: Kubernetes@1
             name: get
             displayName: 'Get services in the new namespace'

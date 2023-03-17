@@ -10,7 +10,7 @@ services:
     volumes:
       - cache:/data
 
-  express_api:
+  api:
     restart: always
     build:
       context: .
@@ -19,12 +19,13 @@ services:
         - PORT=${APP_PORT}
     command: sh -c  "npm run dev"
     ports:
-      - 3000:${APP_PORT}
+      - ${APP_PORT}:${APP_PORT}
     env_file:
       - .env
     volumes:
       - ./:/usr/local/apps/app
       - ignore:/usr/local/apps/app/node_modules
+      
 volumes:
   db:
     driver: local
