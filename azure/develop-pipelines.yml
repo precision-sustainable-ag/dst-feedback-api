@@ -11,12 +11,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '95e79c68-d949-44c1-9447-0d58ed401a12'
+  dockerRegistryServiceConnection: '6a9af1ed-ee2c-4488-b896-7ef2e5871c3b'
   imageRepository: 'dstfeedbackapi'
   containerRegistry: 'containerregistry4pd7i.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'containerregistry4pd7i814594b2-auth'
+  imagePullSecret: 'containerregistry4pd7i9927625f-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -43,15 +43,6 @@ stages:
         echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> /home/vsts/work/1/s/.env
-                
-        echo DB_CONNECTION="$(DB_CONNECTION)" >> /home/vsts/work/1/s/.env
-        echo DB_DATABASE="$(DB_DATABASE)" >> /home/vsts/work/1/s/.env
-        echo DB_HOST="$(DB_HOST)" >> /home/vsts/work/1/s/.env
-        echo DB_PORT="$(DB_PORT)" >> /home/vsts/work/1/s/.env
-        echo DB_USERNAME="$(DB_USERNAME)" >> /home/vsts/work/1/s/.env
-        echo DB_PASSWORD="$(DB_PASSWORD)" >> /home/vsts/work/1/s/.env
-        echo DB_SSL="$(DB_SSL)" >> /home/vsts/work/1/s/.env
-        echo DB_WATCH="$(DB_WATCH)" >> /home/vsts/work/1/s/.env
 
         echo REDIS_PORT="$(REDIS_PORT)" >> /home/vsts/work/1/s/.env
         echo REDIS_HOST="$(REDIS_HOST)" >> /home/vsts/work/1/s/.env
@@ -62,7 +53,6 @@ stages:
         echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> /home/vsts/work/1/s/.env
         echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> /home/vsts/work/1/s/.env
         echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> /home/vsts/work/1/s/.env
-      displayName: "Create .env"
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -72,6 +62,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
     - upload: manifests
       artifact: manifests
 
@@ -85,7 +76,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'precisionsustainableagdstfeedbackapi-5818.develop'
+    environment: 'precisionsustainableagdstfeedbackapi-1554.develop'
     strategy:
       runOnce:
         deploy:
@@ -108,13 +99,14 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'precisionsustainableagdstfeedbackapi-5818.$(k8sNamespaceForPR)'
+    environment: 'precisionsustainableagdstfeedbackapi-1554.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
@@ -148,6 +140,7 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+
           - task: Kubernetes@1
             name: get
             displayName: 'Get services in the new namespace'
