@@ -11,12 +11,12 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '7f9950b8-b96d-4b2e-90f2-cc1cada8a729'
+  dockerRegistryServiceConnection: 'b9d4e6ab-2e6b-4555-a05f-5dd8b6eaa000'
   imageRepository: 'dstfeedbackapi'
   containerRegistry: 'containerregistry4pd7i.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
-  imagePullSecret: 'containerregistry4pd7i1616f331-auth'
+  imagePullSecret: 'containerregistry4pd7i63545bba-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -37,13 +37,14 @@ stages:
         echo APP_NAME="$(APP_NAME)" >> /home/vsts/work/1/s/.env
         echo APP_PORT="$(APP_PORT)" >> /home/vsts/work/1/s/.env
         echo APP_ENV="$(APP_ENV)" >> /home/vsts/work/1/s/.env
+        echo APP_URL="$(APP_URL)" >> /home/vsts/work/1/s/.env
         
         echo LOG_CHANNEL="$(LOG_CHANNEL)" >> /home/vsts/work/1/s/.env
         echo CONSOLE_LOG_LEVEL="$(CONSOLE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> /home/vsts/work/1/s/.env
         echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> /home/vsts/work/1/s/.env
-        
+
         echo DB_CONNECTION="$(DB_CONNECTION)" >> /home/vsts/work/1/s/.env
         echo DB_DATABASE="$(DB_DATABASE)" >> /home/vsts/work/1/s/.env
         echo DB_HOST="$(DB_HOST)" >> /home/vsts/work/1/s/.env
@@ -51,16 +52,11 @@ stages:
         echo DB_USERNAME="$(DB_USERNAME)" >> /home/vsts/work/1/s/.env
         echo DB_PASSWORD="$(DB_PASSWORD)" >> /home/vsts/work/1/s/.env
         echo DB_SSL="$(DB_SSL)" >> /home/vsts/work/1/s/.env
-        echo DB_WATCH="$(DB_WATCH)" >> /home/vsts/work/1/s/.env
-
-        echo REDIS_PORT="$(REDIS_PORT)" >> /home/vsts/work/1/s/.env
-        echo REDIS_HOST="$(REDIS_HOST)" >> /home/vsts/work/1/s/.env
-        echo REDIS_PASSWORD="$(REDIS_PASSWORD)" >> /home/vsts/work/1/s/.env
-
+        
         echo GITHUB_ORGANIZATION="$(GITHUB_ORGANIZATION)" >> /home/vsts/work/1/s/.env
         echo GITHUB_APP_ID="$(GITHUB_APP_ID)" >> /home/vsts/work/1/s/.env
         echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> /home/vsts/work/1/s/.env
-        echo GITHUB_CLIENT_SECRET="$(GITHUB_CLIENT_SECRET)" >> /home/vsts/work/1/s/.env
+        echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> /home/vsts/work/1/s/.env
         echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> /home/vsts/work/1/s/.env
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -71,6 +67,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
     - upload: manifests
       artifact: manifests
 
@@ -84,7 +81,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'precisionsustainableagdstfeedbackapi-4206.production'
+    environment: 'precisionsustainableagdstfeedbackapi-5605.production'
     strategy:
       runOnce:
         deploy:
@@ -107,13 +104,14 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'precisionsustainableagdstfeedbackapi-4206.$(k8sNamespaceForPR)'
+    environment: 'precisionsustainableagdstfeedbackapi-5605.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
@@ -147,6 +145,7 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+
           - task: Kubernetes@1
             name: get
             displayName: 'Get services in the new namespace'
