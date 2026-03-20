@@ -38,7 +38,7 @@ class PostFeedbackToGithub extends Job {
         Log.Debug({heading:'Posting Issue to GitHub',message:data});
 
         const response = await service.postIssue({
-            repo: data.repository,
+            repo: title === 'CRASH' ? 'dst-crash' : data.repository,
             title: data.title,
             body,
             labels:data.labels

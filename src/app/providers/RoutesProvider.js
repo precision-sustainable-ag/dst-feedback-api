@@ -1,4 +1,4 @@
-
+const { pathToFileURL } = require('node:url');
 const { getFilesFrom, app_path } = require('../support/helpers/path')
 const { Log } = require('./LoggingProvider');
 const {Provider} = require('../../framework/providers/Provider');
@@ -30,8 +30,8 @@ class RoutesProvider extends Provider{
 
             for(let file of files){
                 if(exclude.includes(file)) continue;
-                
-                const module = await import(app_path(`${dir}/${file}`))
+                const fullPath = app_path(`${dir}/${file}`);
+                const module = await import(pathToFileURL(fullPath).href);
                 const router = module.default;
                 routers[file] = router;
 
