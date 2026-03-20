@@ -40,7 +40,7 @@ const postIssue = async ({
     });
   } catch (error) {
     return {
-      error,
+      error: JSON.stringify(error, null, 2),
     };
   }
 }; // postIssue
