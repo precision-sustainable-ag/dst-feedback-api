@@ -103,6 +103,7 @@ export default async function apiRoutes(app) {
       additionalProperties: true,
       method: 'post',
       object: true,
+      statusCode: 201,
     },
   );
 }
