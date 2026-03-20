@@ -100,6 +100,7 @@ export default async function apiRoutes(app) {
       labels: { type: 'array' },
     },
     {
+      additionalProperties: true,
       method: 'post',
       object: true,
     },
