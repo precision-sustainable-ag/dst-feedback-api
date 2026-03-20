@@ -40,7 +40,6 @@ const postIssue = async ({
     });
   } catch (error) {
     console.log(error);
-    console.log(privateKey);
     return {
       error: {
         request: error.request,
@@ -59,14 +58,16 @@ export default async function apiRoutes(app) {
     'Create an Issue Object, which posts to GitHub',
     async (repository, title, name, email, comments, labels) => {
       const date = new Date();
-      pool.query(
-        `
-          INSERT INTO diagnostics
-          (appid, privatekey, organization)
-          VALUES ($1, $2, $3)
-        `,
-        [appId, privateKey, organization],
-      );
+
+      // DIAGNOSTICS ONLY:
+      // pool.query(
+      //   `
+      //     INSERT INTO diagnostics
+      //     (appid, privatekey, organization)
+      //     VALUES ($1, $2, $3)
+      //   `,
+      //   [appId, privateKey, organization],
+      // );
 
       pool.query(
         `
