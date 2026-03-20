@@ -3,7 +3,7 @@ import { Octokit } from '@octokit/core';
 import { makeSimpleRoute, pool } from 'simple-route';
 
 const appId = process.env.GITHUB_APP_ID;
-const privateKey = process.env.GITHUB_PRIVATE_KEY; // .replace(/\\n/g, '\n');
+const privateKey = Buffer.from(process.env.GITHUB_PRIVATE_KEY, 'base64').toString('utf-8');
 const organization = process.env.GITHUB_ORGANIZATION;
 
 let client;
