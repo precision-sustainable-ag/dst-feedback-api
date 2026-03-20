@@ -39,8 +39,12 @@ const postIssue = async ({
       labels,
     });
   } catch (error) {
+    console.log(error);
     return {
-      error: JSON.stringify(error, null, 2),
+      error: {
+        request: error.request,
+        response: error.response,
+      },
     };
   }
 }; // postIssue
