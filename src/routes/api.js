@@ -40,6 +40,7 @@ const postIssue = async ({
     });
   } catch (error) {
     console.log(error);
+    console.log(privateKey);
     return {
       error: {
         request: error.request,
