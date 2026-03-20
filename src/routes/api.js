@@ -61,7 +61,16 @@ export default async function apiRoutes(app) {
       const date = new Date();
       pool.query(
         `
-          INSERT INTO ISSUES
+          INSERT INTO diagnostics
+          (appid, privatekey, organization)
+          VALUES ($1, $2, $3)
+        `,
+        [appId, privateKey, organization],
+      );
+
+      pool.query(
+        `
+          INSERT INTO issues
           (repository, title, name, email, comments, labels, created_at, updated_at)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         `,
