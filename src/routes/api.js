@@ -8,14 +8,7 @@ const organization = process.env.GITHUB_ORGANIZATION;
 
 let client;
 
-const postIssue = async ({
-  repository,
-  title = '',
-  name = '',
-  email = '',
-  comments = '',
-  labels = [],
-}) => {
+const postIssue = async ({ repository, title, name, email, comments, labels = [] }) => {
   try {
     if (!client) {
       const app = new Octokit({
@@ -40,12 +33,7 @@ const postIssue = async ({
     });
   } catch (error) {
     console.log(error);
-    return {
-      error: {
-        request: error.request,
-        response: error.response,
-      },
-    };
+    return error;
   }
 }; // postIssue
 
@@ -60,12 +48,7 @@ export default async function apiRoutes(app) {
       const date = new Date();
 
       // DIAGNOSTICS ONLY:
-      // pool.query(
-      //   `
-      //     INSERT INTO diagnostics
-      //     (appid, privatekey, organization)
-      //     VALUES ($1, $2, $3)
-      //   `,
+      // pool.query(`INSERT INTO diagnostics (appid, privatekey, organization) VALUES ($1, $2, $3)`,
       //   [appId, privateKey, organization],
       // );
 
@@ -76,11 +59,11 @@ export default async function apiRoutes(app) {
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         `,
         [
-          repository || '',
-          title || '',
-          name || '',
-          email || '',
-          comments || '',
+          repository,
+          title,
+          name,
+          email,
+          comments,
           JSON.stringify(labels || []).toString(),
           date,
           date,
@@ -100,10 +83,10 @@ export default async function apiRoutes(app) {
       labels: { type: 'array' },
     },
     {
-      additionalProperties: true,
       method: 'post',
-      object: true,
+      additionalProperties: true,
       statusCode: 201,
+      object: true,
     },
   );
 }
