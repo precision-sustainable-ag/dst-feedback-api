@@ -34,30 +34,30 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - script: |	
-        echo APP_NAME="$(APP_NAME)" >> $(Build.SourcesDirectory).env
-        echo APP_PORT="$(APP_PORT)" >> $(Build.SourcesDirectory).env
-        echo APP_ENV="$(APP_ENV)" >> $(Build.SourcesDirectory).env
-        echo APP_URL="$(APP_URL)" >> $(Build.SourcesDirectory).env
+        echo APP_NAME="$(APP_NAME)" >> $(Build.SourcesDirectory)/.env
+        echo APP_PORT="$(APP_PORT)" >> $(Build.SourcesDirectory)/.env
+        echo APP_ENV="$(APP_ENV)" >> $(Build.SourcesDirectory)/.env
+        echo APP_URL="$(APP_URL)" >> $(Build.SourcesDirectory)/.env
         
-        echo LOG_CHANNEL="$(LOG_CHANNEL)" >> $(Build.SourcesDirectory).env
-        echo CONSOLE_LOG_LEVEL="$(CONSOLE_LOG_LEVEL)" >> $(Build.SourcesDirectory).env
-        echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> $(Build.SourcesDirectory).env
-        echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> $(Build.SourcesDirectory).env
-        echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> $(Build.SourcesDirectory).env
+        echo LOG_CHANNEL="$(LOG_CHANNEL)" >> $(Build.SourcesDirectory)/.env
+        echo CONSOLE_LOG_LEVEL="$(CONSOLE_LOG_LEVEL)" >> $(Build.SourcesDirectory)/.env
+        echo SLACK_LOG_LEVEL="$(SLACK_LOG_LEVEL)" >> $(Build.SourcesDirectory)/.env
+        echo FILE_LOG_LEVEL="$(FILE_LOG_LEVEL)" >> $(Build.SourcesDirectory)/.env
+        echo SLACK_WEBHOOK_URL="$(SLACK_WEBHOOK_URL)" >> $(Build.SourcesDirectory)/.env
 
-        echo DB_CONNECTION="$(DB_CONNECTION)" >> $(Build.SourcesDirectory).env
-        echo DB_DATABASE="$(DB_DATABASE)" >> $(Build.SourcesDirectory).env
-        echo DB_HOST="$(DB_HOST)" >> $(Build.SourcesDirectory).env
-        echo DB_PORT="$(DB_PORT)" >> $(Build.SourcesDirectory).env
-        echo DB_USERNAME="$(DB_USERNAME)" >> $(Build.SourcesDirectory).env
-        echo DB_PASSWORD="$(DB_PASSWORD)" >> $(Build.SourcesDirectory).env
-        echo DB_SSL="$(DB_SSL)" >> $(Build.SourcesDirectory).env
+        echo DB_CONNECTION="$(DB_CONNECTION)" >> $(Build.SourcesDirectory)/.env
+        echo DB_DATABASE="$(DB_DATABASE)" >> $(Build.SourcesDirectory)/.env
+        echo DB_HOST="$(DB_HOST)" >> $(Build.SourcesDirectory)/.env
+        echo DB_PORT="$(DB_PORT)" >> $(Build.SourcesDirectory)/.env
+        echo DB_USERNAME="$(DB_USERNAME)" >> $(Build.SourcesDirectory)/.env
+        echo DB_PASSWORD="$(DB_PASSWORD)" >> $(Build.SourcesDirectory)/.env
+        echo DB_SSL="$(DB_SSL)" >> $(Build.SourcesDirectory)/.env
         
-        echo GITHUB_ORGANIZATION="$(GITHUB_ORGANIZATION)" >> $(Build.SourcesDirectory).env
-        echo GITHUB_APP_ID="$(GITHUB_APP_ID)" >> $(Build.SourcesDirectory).env
-        echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> $(Build.SourcesDirectory).env
-        echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> $(Build.SourcesDirectory).env
-        echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> $(Build.SourcesDirectory).env
+        echo GITHUB_ORGANIZATION="$(GITHUB_ORGANIZATION)" >> $(Build.SourcesDirectory)/.env
+        echo GITHUB_APP_ID="$(GITHUB_APP_ID)" >> $(Build.SourcesDirectory)/.env
+        echo GITHUB_CLIENT_ID="$(GITHUB_CLIENT_ID)" >> $(Build.SourcesDirectory)/.env
+        echo GITHUB_CLIENT_SECRETD="$(GITHUB_CLIENT_SECRETD)" >> $(Build.SourcesDirectory)/.env
+        echo GITHUB_PRIVATE_KEY="$(GITHUB_PRIVATE_KEY)" >> $(Build.SourcesDirectory)/.env
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
